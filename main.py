@@ -11,7 +11,7 @@ for key, value in btc_history.items():
     if key != 'data_points':
         print(key, value)
     else: 
-        print(len(value))
+        print(value[0])
 
 
 
