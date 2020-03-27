@@ -1,16 +1,16 @@
 from pandas import DataFrame
 import matplotlib.pyplot as plt
 import robin_stocks as r 
-import tkinter as t
+import tkinter as tk
 from bit import Bit
+from gui import GUI
 
-#main
-# login = r.login('yrenter@gmail.com','1y6a8s1w3a1n')
 
-b = Bit('yrenter@gmail.com','1y6a8s1w3a1n')
-b.set_historical_window(5)
-btc_ma = b.get_moving_average()
-print(btc_ma)
+
+root = tk.Tk()
+root.minsize(1500, 1000)
+app = GUI('yrenter@gmail.com','1y6a8s1w3a1n',master=root,)
+app.mainloop()
 
 # btc_history = r.crypto.get_crypto_historicals('BTC','5minute', 'day', '24_7')
 # interval = btc_history['data_points']
@@ -28,16 +28,4 @@ print(btc_ma)
 # df.plot(x ='Times', y='Value', kind = 'line')
 # plt.show()
 
-# root = t.Tk() 
-# menu = t.Menu(root) 
-# root.config(menu=menu) 
-# filemenu = t.Menu(menu) 
-# menu.add_cascade(label='Intervals', menu=filemenu) 
-# filemenu.add_command(label='1 minute', command=) 
-# filemenu.add_command(label='5 minute') 
-# filemenu.add_separator() 
-# filemenu.add_command(label='Exit', command=root.quit) 
-# helpmenu = t.Menu(menu) 
-# menu.add_cascade(label='Help', menu=helpmenu) 
-# helpmenu.add_command(label='About') 
-# t.mainloop() 
+

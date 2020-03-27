@@ -23,7 +23,6 @@ class Bit(object):
 
     #interval range 5 - 200 minute
     def get_formated_historical(self):
-
         interval = int(self.interval / 5)
         btc_history = self.get_historical()
         data = btc_history['data_points']
@@ -37,4 +36,11 @@ class Bit(object):
         btc_history = r.crypto.get_crypto_historicals('BTC', '5minute', 'day', '24_7')
         login = r.logout(); 
         return btc_history
+
+    def get_market_value(self):
+        login = r.login(self.username, self.password)
+        btc_info = r.get_crypto_quote('BTC')
+        login = r.logout()
+        return btc_info['mark_price']
+
 
