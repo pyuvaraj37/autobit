@@ -2,6 +2,7 @@ import tkinter as tk
 from bit import Bit
 import threading
 
+
 class GUI(tk.Frame):
 
     bit = Bit('','')
@@ -15,39 +16,52 @@ class GUI(tk.Frame):
 
     def create_widgets(self):
 
-        self.label = tk.Label(self)
-        self.label["text"] = "AUTOBIT"
-        self.label.grid(row=0, column=1)
+        self.winfo_toplevel().title("AUTOBIT")
 
-        self.get_ma = tk.Button(self)
-        self.get_ma["text"] = "Get Moving Average"
-        self.get_ma["command"] = self.get_moving_average
-        self.get_ma.grid(row=1, column=1)
+        #Moving Average System
 
-        self.ma_value = tk.Text(self, height=1, width=10)
-        self.ma_value.grid(row=1, column=2)
+        #Interval Text Box, Value Text Box, and Button for 1
+        self.ma_value_one = tk.Text(self, height=1, width=10)
+        self.ma_value_one.grid(row=3, column=2)
+        self.ma_interval_one = tk.Text(self, height=1, width=10)
+        self.ma_interval_one.grid(row=3, column=1)
+        self.get_ma_one = tk.Button(self)
+        self.get_ma_one["text"] = "Get Moving Average"
+        self.get_ma_one["command"] = lambda arg1=self.ma_value_one, arg2=self.ma_interval_one :self.get_moving_average(arg1,arg2)
+        self.get_ma_one.grid(row=3, column=0)
 
-        self.ma = tk.Text(self, height=1, width=10)
-        self.ma.grid(row=1, column=3)
+        #Interval Text Box, Value Text Box, and Button for 2
+        self.ma_value_two = tk.Text(self, height=1, width=10)
+        self.ma_value_two.grid(row=4, column=2)
+        self.ma_interval_two = tk.Text(self, height=1, width=10)
+        self.ma_interval_two.grid(row=4, column=1)
+        self.get_ma_two = tk.Button(self)
+        self.get_ma_two["text"] = "Get Moving Average"
+        self.get_ma_two["command"] = lambda arg1=self.ma_value_two, arg2=self.ma_interval_two :self.get_moving_average(arg1,arg2)
+        self.get_ma_two.grid(row=4, column=0)
 
-        self.mp = tk.Text(self, height=1, width=10)
-        self.mp.grid(row=1, column=4)
+        #Text Box for Market Price
+        self.mp = tk.Text(self, height=1, width=25)
+        self.mp.insert(tk.END, "Getting Market Price...")
+        self.master.after(10000, self.update_market_price)
+        self.mp.grid(row=1, column=1)
         
-        self.quit = tk.Button(self, text="QUIT", fg="red",
-                              command=self.master.destroy)
-        self.quit.grid(row=1, column=5)
+        #Quit Button
+        self.quit = tk.Button(self, text="QUIT", fg="red", command=self.master.destroy)
+        self.quit.grid(row=5, column=1)
 
 
-    def get_moving_average(self):
+    def get_moving_average(self, ma, ma_value):
         print("Getting moving average...")
-        value = self.retrieve_input()
+        ma.delete("1.0",tk.END)
+        value = int(self.retrieve_input_from_TB(ma_value))
         self.bit.set_historical_window(value)
         btc_ma = self.bit.get_moving_average()
-        self.ma.insert(tk.END,str(btc_ma))
+        ma.insert(tk.END, btc_ma)
 
-    def retrieve_input(self):
-        input = self.ma_value.get("1.0", tk.END)
-        return int(input)
+    def retrieve_input_from_TB(self, ma_value):
+        input = ma_value.get("1.0", tk.END)
+        return input
 
     def get_market_value(self):
         input = self.bit.get_market_value()
@@ -55,6 +69,8 @@ class GUI(tk.Frame):
 
     def update_market_price(self):
         print("Updating Market Price...")
+        self.mp.delete("1.0", tk.END)
         market_price = self.get_market_value()
         self.mp.insert(tk.END, market_price)
-        self.mp.update(5000, self.update_market_price())
+        self.master.after(60000,self.update_market_price)
+        
