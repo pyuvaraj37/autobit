@@ -33,7 +33,7 @@ class Bit(object):
 
     def get_historical(self):
         login = r.login(self.username, self.password)
-        btc_history = r.crypto.get_crypto_historicals('BTC', '5minute', 'day', '24_7')
+        btc_history = r.crypto.get_crypto_historical('BTC', '5minute', 'day', '24_7')
         login = r.logout(); 
         return btc_history
 
